@@ -22,20 +22,19 @@ char numberToLetter(char i){
     return i + 'a';
 }
 
-int main(void)
-{
+int main(){
     //CODE GOES HERE 
     for (int i = 0; inputString[i] != '\0'; ++i) {
-    char c = inputString[i];
-
-    if (c >= 'a' && c <= 'z') {
-        int kkk = letterToNumber(c);                 
-        int shifted = (kkk + offset) % BUFFER_SIZE;  
-        char out = numberToLetter(shifted);          
-        putc(out);
-    } else {
-        putc(c);
+        char c = inputString[i];
+        if (c >= 'a' && c <= 'z') {
+            int kkk = letterToNumber(c);                 
+            int shifted = (kkk + offset) % BUFFER_SIZE;  
+            char out = numberToLetter(shifted);          
+            putc(out);
+        } 
+        else {
+            putc(c);
+        }
     }
-}
     putc('\n');
 }
