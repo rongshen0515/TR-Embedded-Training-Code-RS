@@ -230,21 +230,14 @@ int main(){
 
         if(cooldownTick > 0) cooldownTick--;
 
-        if(ls == Remote::SwitchState::DOWN){
-            bursting = false;
-            shotsLeft = 0;
-            shotTick = gapTick = 0;
-            cooldownTick = 0;
-
-            flyCmd = 0;
-            idxCmd = 0;
-        }
-        else if(ls == Remote::SwitchState::MID){
-            flyCmd = FLYWHEEL_SPD;
+        if(ls == Remote::SwitchState::MID){
+            flywheelL.setSpeed(FLYWHEEL_SPD);
+            flywheelR.setSpeed(FLYWHEEL_SPD);
             idxCmd = 0;
         }
         else if(ls == Remote::SwitchState::UP){
-            flyCmd = FLYWHEEL_SPD;
+            flywheelL.setSpeed(FLYWHEEL_SPD);
+            flywheelR.setSpeed(FLYWHEEL_SPD);
             if(midToUp && !bursting && cooldownTick == 0){
                 bursting = true;
                 shotsLeft = 3;
@@ -254,7 +247,7 @@ int main(){
 
             if(bursting){
                 if(shotTick < TICKS_PER_SHOT){
-                    idxCmd = INDEXER_SPD;
+                    indexer.setSpeed(INDEXER_SPD);
                     shotTick++;
                 } else {
                     idxCmd = 0;
@@ -272,18 +265,19 @@ int main(){
                     }
                 }
             } else {
-                idxCmd = 0;
+                indexer.setSpeed(0);
             }
         }
         else { 
-            flyCmd = 0;
-            idxCmd = 0;
+            bursting = false;
+            shotsLeft = 0;
+            shotTick = gapTick = 0;
+            cooldownTick = 0;
+
+            flywheelL.setSpeed(0);
+            flywheelR.setSpeed(0);
+            indexer.setSpeed(0);
         }
-
-        flywheelL.setSpeed(flyCmd);
-        flywheelR.setSpeed(flyCmd);
-        indexer.setSpeed(idxCmd);
-
         DJIMotor::s_sendValues();
     }
 }
